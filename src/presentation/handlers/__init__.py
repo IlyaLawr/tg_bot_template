@@ -1,0 +1,6 @@
+from .filling_profile_handlers import setup_filling_profile_handlers
+from .game_action_handlers import setup_game_handlers
+from .launch_bot_handlers import setup_start_handlers
+from .show_info_handler import setup_info_handlers
+from .show_menu_handler import setup_menu_handlers
+from .show_rating_handler import setup_rating_handlers
