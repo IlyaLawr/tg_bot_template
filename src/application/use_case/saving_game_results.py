@@ -23,7 +23,7 @@ class SavingGameResultUseCase:
             user_profile: Profile = await uow.profile_repository.get(client_id)
 
             if user_profile is None:
-                raise ValueError('Профиль не найден.')
+                return
 
             result = game.result()
             user_profile.taps_statistics += result
