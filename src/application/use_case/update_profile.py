@@ -22,6 +22,8 @@ class UpdateProfileUseCase:
 
         async with self._uow as uow:
             profile: Profile = await uow.profile_repository.get(client_id)
+            if not profile:
+                raise ValueError('Отсутствуют данные в БД для обновления.')
 
             for field_name, value in updates.items():
                 if hasattr(profile, field_name):
