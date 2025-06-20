@@ -24,6 +24,10 @@ class RegisterUserUseCase:
         profile: Profile = Profile(client_id=request.client_id)
 
         async with self._uow as uow:
+            if await uow.user_repository.get(user.client_id):
+                return RegisterUserResponse(success=True,
+                                            message='Пользователь уже зарегистрирован.')
+
             await uow.user_repository.create(user)
             await uow.profile_repository.create(profile)
 
