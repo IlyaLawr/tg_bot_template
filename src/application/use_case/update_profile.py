@@ -15,10 +15,10 @@ class UpdateProfileUseCase:
         self._uow = uow
 
 
-    async def execute(self, client_id) -> None:
+    async def execute(self, client_id) -> bool:
         updates = await self._state_cache.get_profile_updates(client_id)
         if not updates:
-            return
+            return False
 
         async with self._uow as uow:
             profile: Profile = await uow.profile_repository.get(client_id)
@@ -32,3 +32,4 @@ class UpdateProfileUseCase:
             await uow.profile_repository.update(profile)
 
         await self._state_cache.clear(client_id)
+        return True
