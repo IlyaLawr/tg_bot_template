@@ -22,6 +22,9 @@ class ShowRatingUseCase:
                     leader_id = profile.client_id
                     leader_count_tap = profile.taps_statistics
 
+            if leader_id is None:
+                return
+
             leader_user: User = await uow.user_repository.get(leader_id)
             leader_profile: Profile = await uow.profile_repository.get(leader_id)
 
