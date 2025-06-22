@@ -11,3 +11,4 @@ wheels/
 .env
 
 photo_storage/*
+.pytest_cache
