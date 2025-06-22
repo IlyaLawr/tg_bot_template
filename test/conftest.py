@@ -43,13 +43,26 @@ TMP_PATH = Path('../tmp_photo_storage/')
 @asyncio_fixture(scope='session', autouse=True)
 async def create_test_database():
     admin_db_url = DB_URL.replace('/postgres_test', '/postgres')
-    engine = create_async_engine(admin_db_url)
+    engine = create_async_engine(admin_db_url, isolation_level='AUTOCOMMIT')
+
     async with engine.connect() as conn:
-        try:
-            await conn.execute(text('CREATE DATABASE postgres_test'))
-        except Exception:
-            pass 
+        result = await conn.execute(text('SELECT 1 FROM pg_database WHERE datname = :db'),
+                                    {'db': db_name})
+
+        exists = result.scalar() is not None
+        if not exists:
+            await conn.execute(text(f'CREATE DATABASE {db_name}'))
     yield
+
+    async with engine.connect() as conn:
+        await conn.execute(text(f"""SELECT pg_terminate_backend(pid)
+                                    FROM pg_stat_activity
+                                    WHERE datname = :db
+                                    AND pid <> pg_backend_pid()"""),
+                            {'db': db_name})
+        await conn.execute(text(f'DROP DATABASE IF EXISTS {db_name}'))
+
+    await engine.dispose()
 
 
 @asyncio_fixture(scope='session')
