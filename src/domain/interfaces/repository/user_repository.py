@@ -9,15 +9,15 @@ class IUserRepository(ABC):
 
 
     @abstractmethod
-    async def get(self, id: int) -> User:
+    async def get(self, id: int) -> User | None:
         pass
 
 
     @abstractmethod
-    async def update(self, profile: User) -> None: 
+    async def update(self, profile: User) -> bool: 
         pass
 
 
     @abstractmethod
-    async def delete(self, id: int) -> None: 
+    async def delete(self, id: int) -> bool: 
         pass

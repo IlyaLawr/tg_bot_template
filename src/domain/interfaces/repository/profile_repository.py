@@ -11,7 +11,7 @@ class IProfileRepository(ABC):
 
 
     @abstractmethod
-    async def get(self, id: int) -> Profile:
+    async def get(self, id: int) -> Profile | None:
         pass
 
 
@@ -21,10 +21,10 @@ class IProfileRepository(ABC):
 
 
     @abstractmethod
-    async def update(self, profile: Profile) -> None: 
+    async def update(self, profile: Profile) -> bool: 
         pass
 
 
     @abstractmethod
-    async def delete(self, id: int) -> None: 
+    async def delete(self, id: int) -> bool: 
         pass
