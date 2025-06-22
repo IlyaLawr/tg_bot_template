@@ -1,9 +1,7 @@
 from contextlib import AbstractAsyncContextManager
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from types import TracebackType
 from typing import Type
-
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.interfaces.repository.user_repository import IUserRepository
 from domain.interfaces.repository.profile_repository import IProfileRepository
@@ -15,7 +13,6 @@ class IUnitOfWork(AbstractAsyncContextManager['IUnitOfWork']):
     для работы с транзакцией и репозиториями.
     """
 
-    session: AsyncSession
     user_repository: IUserRepository
     profile_repository: IProfileRepository
 
@@ -25,7 +22,7 @@ class IUnitOfWork(AbstractAsyncContextManager['IUnitOfWork']):
         """
         Открывает сессию и начинает транзакцию.
         Должен инициализировать:
-          - self.session
+          - сессию, которая будет передана в репозитории
           - self.user_repository
           - self.profile_repository
         """
