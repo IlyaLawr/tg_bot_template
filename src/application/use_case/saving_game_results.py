@@ -23,6 +23,7 @@ class SavingGameResultUseCase:
             user_profile: Profile = await uow.profile_repository.get(client_id)
 
             if user_profile is None:
+                await self._state.clear_game(game_id)
                 return
 
             result = game.result()
